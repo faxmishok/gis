@@ -2,25 +2,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Using Parcel with OpenLayers</title>
-
-    <link rel="stylesheet" href="./index.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenLayers Map</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./libs/v6.5.0-dist/ol.css">
 </head>
 
 <body>
 
-    <header>
-        <h1>GIS Mapping Application</h1>
-    </header>
-    <div class="main">
-        <div id="map"></div>
+  <div class="grid-container">
+    <div class="grid-1">
+      <div class="sidebar">
+        <h2>Base Layers</h2>
+        <input type="radio" name="baseLayerRadioButton" value="OSMStandard" checked>OSM Standard<br />
+        <input type="radio" name="baseLayerRadioButton" value="OSMHumanitarian">OSM Humanitarian<br />
+        <input type="radio" name="baseLayerRadioButton" value="StamenTerrain">Stamen Terrain<br />
+      </div>
     </div>
 
-    <script src="./index.js"></script>
+    <div class="grid-2">
+      <div id="js-map" class="map"></div>
+    </div>
+  </div>
+
+  <script src="./main.js"></script>
+  <script src="./libs/v6.5.0-dist/ol.js"></script>
+
 </body>
 
 </html>
