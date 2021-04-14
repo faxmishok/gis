@@ -52,7 +52,7 @@ function init() {
 
   // Layer Switcher
   const baseLayerElements = document.querySelectorAll(
-    '.sidebar > input[type=radio]'
+    '.sidebar > label > input[type=radio]'
   );
   for (let baseLayerElement of baseLayerElements) {
     baseLayerElement.addEventListener('change', function () {
