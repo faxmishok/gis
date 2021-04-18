@@ -23,36 +23,59 @@
       <div class="sidebar">
         <h2>Base Layers</h2>
         <label class="radio">
-          <input type="radio" name="baseLayerRadioButton" value="OSMStandard" checked>
+          <input type="radio" name="baseLayerRadioButton" value="OSMStandard" id="osm-standard" checked />
           <span>OSM Standard</span>
         </label>
         <label class="radio">
-          <input type="radio" name="baseLayerRadioButton" value="OSMHumanitarian">
+          <input type="radio" name="baseLayerRadioButton" value="OSMHumanitarian" id="osm-humanitarian" />
           <span>OSM Humanitarian</span>
         </label>
         <label class="radio">
-          <input type="radio" name="baseLayerRadioButton" value="StamenTerrain">
+          <input type="radio" name="baseLayerRadioButton" value="StamenTerrain" id="stamen-terrain" />
           <span>Stamen Terrain</span>
         </label>
 
-        <h2 class="tools">
-          Tools
-        </h2>
-        <h4>Draw & Modify</h4>
+        <h2>Tools</h2>
+
+        <h3>Map Controls</h3>
+
+        <label class="radio">
+          <input type="radio" name="mapControlRadioButton" id="pointer" checked />
+          <span>
+            <img src="./pointer.svg" alt="pointer" class="svg" />
+          </span>
+        </label>
+
+        <label class="radio">
+          <input type="radio" name="mapControlRadioButton" id="draw" />
+          <span>
+            <img src="./pencil.svg" alt="draw" class="svg" />
+          </span>
+        </label>
+
+        <button id="zoomInBtn" title="Zoom in">
+          <img src="./zoom-in.svg" alt="zoom-in" class="svg" />
+        </button>
+
+        <button id="zoomOutBtn" title="Zoom out">
+          <img src="./zoom-out.svg" alt="zoom-out" class="svg" />
+        </button>
+
+        <button id="fullScreenBtn" title="Full screen">
+          <img src="./full-screen.svg" alt="full-screen" class="svg" />
+        </button>
+
+        <h3>Draw & Modify</h3>
         <form class="form-inline">
           <label for="type">Geometry type &nbsp;</label>
           <div class="tooltip">
-            <select id="type" class="tooltip">
+            <select id="type" title="Press and hold Shift key to free draw" class="tooltip form-control mr-2 mb-2 mt-2">
               <option value="Point">Point</option>
               <option value="LineString">LineString</option>
               <option value="Polygon">Polygon</option>
               <option value="Circle">Circle</option>
             </select>
-            <span class="tooltiptext">
-              Press and hold Shift key to free draw
-            </span>
           </div>
-
         </form>
       </div>
     </div>

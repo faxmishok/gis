@@ -1,3 +1,26 @@
+@font-face {
+  font-family: 'San Francisco';
+  font-weight: 400;
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff');
+}
+
+html {
+  font-family: 'San Francisco';
+  background: #fff;
+  color: #333;
+}
+
+/* Typography */
+
+h2 {
+  font-size: 2em;
+}
+
+label span {
+  font-size: 1em;
+  font-weight: 501;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -19,7 +42,7 @@ body {
 }
 
 .sidebar {
-  margin-left: 15px;
+  margin-left: 30px;
 }
 
 /* Radio Button Styling */
@@ -90,17 +113,17 @@ body {
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 250px;
+  width: 270px;
   background-color: black;
   color: #fff;
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
 
-  top: 100%;
-  left: 50%;
-  margin-left: -125px;
-
+  bottom: 100%;
+  left: 100%;
+  margin-left: -135px;
+  margin-bottom: 10px;
   position: absolute;
   z-index: 1;
 }
@@ -108,4 +131,13 @@ body {
 .tooltip:hover .tooltiptext {
   visibility: visible;
   user-select: none;
+}
+
+select {
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.svg {
+  height: 20px;
 }
