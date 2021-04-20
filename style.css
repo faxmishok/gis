@@ -141,3 +141,54 @@ select {
 .svg {
   height: 20px;
 }
+
+button {
+  margin: 0px 1px;
+  padding: 5px 6px 3px 6px;
+  border: 0px solid black;
+  border-radius: 4px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1330px) {
+  .sidebar {
+    margin: 15px;
+  }
+}
+
+@media (max-width: 1170px) {
+  .sidebar {
+    margin: 7px;
+  }
+}
+
+@media (max-width: 1081px) {
+  .sidebar {
+    margin: 7px;
+  }
+
+  select {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid-container {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .map {
+    width: 100%;
+  }
+
+  .sidebar {
+    margin: 0px 0px 20px 0px;
+  }
+
+  .grid-1 {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+  }
+}
