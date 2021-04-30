@@ -107,6 +107,7 @@ function init() {
     map.addInteraction(draw);
     snap = new ol.interaction.Snap({ source: source });
     map.addInteraction(snap);
+    document.getElementById('osm-standard').checked = true;
   }
 
   function activatePointerMode() {
@@ -146,8 +147,7 @@ function init() {
     });
   });
 
-  // W3 Fullscreen API with cross-browser availability
-  document.getElementById('fullScreenBtn').addEventListener('click', () => {
+  const makeFullScreen = () => {
     var mapElement = document.getElementById('js-map');
     if (mapElement.requestFullscreen) {
       mapElement.requestFullscreen();
@@ -158,5 +158,26 @@ function init() {
     } else if (mapElement.msRequestFullscreen) {
       mapElement.msRequestFullscreen();
     }
-  });
+  };
+  // W3 Fullscreen API with cross-browser availability
+  document
+    .getElementById('fullScreenBtn')
+    .addEventListener('click', makeFullScreen);
+
+  const removeVectorLayer = () => {
+    var layersToRemove = [];
+    map.getLayers().forEach(function (layer) {
+      if (
+        layer.get('name') != undefined &&
+        layer.get('name') === 'drawvector'
+      ) {
+        layersToRemove.push(layer);
+      }
+    });
+
+    var len = layersToRemove.length;
+    for (var i = 0; i < len; i++) {
+      map.removeLayer(layersToRemove[i]);
+    }
+  };
 }
