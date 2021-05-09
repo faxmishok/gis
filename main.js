@@ -1,9 +1,25 @@
 window.onload = init;
 
 function init() {
-  // Raster standard layer
-  const raster = new ol.layer.Tile({
+  // Overriding and adding map controls
+  const fullScreenControl = new ol.control.FullScreen();
+  const mousePositionControl = new ol.control.MousePosition();
+  const overViewMapControl = new ol.control.OverviewMap({
+    collapsed: true,
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM(),
+      }),
+    ],
+  });
+  const scaleLineControl = new ol.control.ScaleLine();
+  const zoomSliderControl = new ol.control.ZoomSlider();
+  const zoomToExtentControl = new ol.control.ZoomToExtent();
+
+  // Raster standard OSM layer
+  const OSMStandard = new ol.layer.Tile({
     source: new ol.source.OSM(),
+    title: 'OSMStandard',
   });
 
   const source = new ol.source.Vector();
@@ -27,13 +43,31 @@ function init() {
     }),
   });
 
-  // Layers
-  const OSMStandard = new ol.layer.Tile({
-    source: new ol.source.OSM(),
-    visible: false,
-    title: 'OSMStandard',
+  const map = new ol.Map({
+    view: new ol.View({
+      center: [5293437.691331564, 4928767.585347839],
+      zoom: 8,
+    }),
+    layers: [
+      // new ol.layer.Tile({
+      //   source: new ol.source.OSM(),
+      // }),
+      OSMStandard,
+      vector,
+    ],
+    target: 'js-map',
+    keyboardEventTarget: document,
+    controls: ol.control.defaults().extend([
+      fullScreenControl,
+      // mousePositionControl,
+      overViewMapControl,
+      // scaleLineControl,
+      zoomSliderControl,
+      zoomToExtentControl,
+    ]),
   });
 
+  // Layers
   const OSMHumanitarian = new ol.layer.Tile({
     source: new ol.source.OSM({
       url: 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
@@ -54,29 +88,19 @@ function init() {
 
   // Layer group
   const baseLayerGroup = new ol.layer.Group({
-    layers: [OSMStandard, OSMHumanitarian, stamenTerrain],
+    layers: [OSMHumanitarian, stamenTerrain],
   });
 
-  const map = new ol.Map({
-    view: new ol.View({
-      center: [5293437.691331564, 4928767.585347839],
-      zoom: 8,
-    }),
-    layers: [
-      // new ol.layer.Tile({
-      //   source: new ol.source.OSM(),
-      // }),
-      raster,
-      vector,
-    ],
-    target: 'js-map',
-  });
+  map.addLayer(baseLayerGroup);
 
   // map.on('click', function (e) {
   //   console.log(e.coordinate);
   // });
 
-  map.addLayer(baseLayerGroup);
+  const dragRotateInteraction = new ol.interaction.DragRotate({
+    condition: ol.events.condition.altKeyOnly,
+  });
+  map.addInteraction(dragRotateInteraction);
 
   // Layer Switcher
   const baseLayerElements = document.querySelectorAll(
@@ -97,9 +121,12 @@ function init() {
   map.addInteraction(modify);
 
   var draw, snap;
-  var typeSelect = document.getElementById('type');
+  const typeSelect = document.getElementById('type');
+
+  const OSMStandardElement = document.getElementById('osm-standard');
 
   function addInteractions() {
+    OSMStandardElement.checked = true;
     draw = new ol.interaction.Draw({
       source: source,
       type: typeSelect.value,
@@ -107,32 +134,33 @@ function init() {
     map.addInteraction(draw);
     snap = new ol.interaction.Snap({ source: source });
     map.addInteraction(snap);
-    document.getElementById('osm-standard').checked = true;
   }
 
   function activatePointerMode() {
     map.removeInteraction(draw);
     map.removeInteraction(snap);
     map.removeInteraction(modify);
-    document.getElementById('osm-standard').checked = true;
+    OSMStandardElement.checked = true;
   }
 
+  const drawElement = document.getElementById('draw');
   // Select draw tool
   typeSelect.onchange = function () {
     map.removeInteraction(draw);
     map.removeInteraction(snap);
     addInteractions();
-    document.getElementById('draw').checked = true;
+    drawElement.checked = true;
   };
 
   // Handle radio button selections between pointer and draw mode
-  document.getElementById('draw').addEventListener('change', addInteractions);
+  drawElement.addEventListener('change', addInteractions);
   document
     .getElementById('pointer')
     .addEventListener('change', activatePointerMode);
 
   // Handle zoom in
-  document.getElementById('zoomInBtn').addEventListener('click', () => {
+  const zoomInElement = document.getElementById('zoomInBtn');
+  zoomInElement.addEventListener('click', () => {
     map.getView().animate({
       zoom: map.getView().getZoom() + 1,
       duration: 250,
@@ -140,7 +168,8 @@ function init() {
   });
 
   // Handle zoom out
-  document.getElementById('zoomOutBtn').addEventListener('click', () => {
+  const zoomOutElement = document.getElementById('zoomOutBtn');
+  zoomOutElement.addEventListener('click', () => {
     map.getView().animate({
       zoom: map.getView().getZoom() - 1,
       duration: 250,
@@ -160,24 +189,12 @@ function init() {
     }
   };
   // W3 Fullscreen API with cross-browser availability
-  document
-    .getElementById('fullScreenBtn')
-    .addEventListener('click', makeFullScreen);
+  const fullScreenElement = document.getElementById('fullScreenBtn');
+  fullScreenElement.addEventListener('click', makeFullScreen);
 
-  const removeVectorLayer = () => {
-    var layersToRemove = [];
-    map.getLayers().forEach(function (layer) {
-      if (
-        layer.get('name') != undefined &&
-        layer.get('name') === 'drawvector'
-      ) {
-        layersToRemove.push(layer);
-      }
-    });
-
-    var len = layersToRemove.length;
-    for (var i = 0; i < len; i++) {
-      map.removeLayer(layersToRemove[i]);
-    }
-  };
+  const clearElement = document.getElementById('clearBtn');
+  clearElement.addEventListener('click', () => {
+    map.removeLayer(vector);
+    location.reload();
+  });
 }
