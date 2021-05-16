@@ -8,6 +8,7 @@ export default (myLayers) => {
   for (i = 0; i < myLayers.length; i++) {
     const layerDesc = myLayers[i];
     if (layerDesc.url === '') {
+      //For OSM Standard
       layers.push(
         new TileLayer({
           visible: false,

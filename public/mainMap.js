@@ -19,14 +19,11 @@ import { selectYourMap, selectYourDrawType } from './mapModules/controls';
 import { createDraw, addDrawInteraction } from './mapModules/draw';
 import { downloadGEO } from './mapModules/export';
 import { altKeyOnly } from 'ol/events/condition';
-import { GeoJSON } from 'ol/format';
-import fetchAllData from './mapModules/request';
+import { loadPGVectors } from './mapModules/load';
 
-/*
-===================================
-OVERRIDING AND ADDING MAP CONTROLS
-===================================
-*/
+/*=========================================
+<!-- OVERRIDING AND ADDING MAP CONTROLS -->
+=========================================*/
 const fullScreenControl = new FullScreen();
 const mousePositionControl = new MousePosition();
 const overViewMapControl = new OverviewMap({
@@ -57,11 +54,10 @@ const baseLayerNames = [
 ];
 
 const layers = makeLayers(baseLayerNames);
-/*
-===================================
-MAIN MAP
-===================================
-*/
+
+/*===============
+<!-- MAIN MAP -->
+===============*/
 const map = new Map({
   target: 'js-map',
   layers,
@@ -80,11 +76,9 @@ const map = new Map({
   ]),
 });
 
-/*
-========================================================
-Create source and layer for user location and drawings
-========================================================
-*/
+/*=============================================================
+<!-- Create source and layer for user location and drawings -->
+=============================================================*/
 const source = new VectorSource();
 const vector = new VectorLayer({
   source: source,
@@ -108,11 +102,9 @@ const vector = new VectorLayer({
 });
 map.addLayer(vector);
 
-/*
- ============================
- CHANGES THE SELECTED MAP LAYER
- ===========================
- */
+/*=====================================
+<!-- CHANGES THE SELECTED MAP LAYER -->
+=====================================*/
 map.addControl(selectYourMap);
 
 const select = document.getElementById('layer-select');
@@ -127,53 +119,35 @@ select.addEventListener('change', onChange);
 
 onChange();
 
-/*
-=====================
-Download as GeoJSON
-=====================
-*/
+/*==========================
+<!-- Download as GeoJSON -->
+==========================*/
 downloadGEO(source, 'download-geo');
 
-const loadedVectorsElement = document.getElementById('loaded-vectors');
+/*==============================================
+<!-- Load and Visualize Postgres Data on Map -->
+==============================================*/
 
-fetchAllData().then((response) => {
-  for (const responseItem of response) {
-    var nwLayer = new VectorLayer({
-      title: 'My Title',
-      source: new VectorSource({
-        features: new GeoJSON().readFeatures(responseItem),
-      }),
-      style: new Style({
-        fill: new Fill({
-          color: 'green',
-        }),
-        stroke: new Stroke({
-          color: '#fff',
-          width: 3,
-        }),
-        image: new Circle({
-          radius: 7,
-          fill: new Fill({ color: 'green' }),
-        }),
-      }),
-    });
-    map.addLayer(nwLayer);
+const PGLayers = loadPGVectors(map, 'loaded-vectors');
+const onCheck = () => {
+  for (let i = 0; i < PGLayers.length; i++) {
+    var labelElement = document.getElementById(`cb-${i}`);
+    PGLayers[i].setVisible(labelElement.checked);
   }
-});
+};
+document.getElementById('loaded-vectors').addEventListener('change', onCheck);
 
-/*
-======================
-MODIFY
-======================
-*/
+/*=========================
+<!-- Modify Map Vectors -->
+=========================*/
+
 const modify = new Modify({ source });
 map.addInteraction(modify);
 
-/*
-===========================
-Drawing
-===========================
-*/
+/*==========================
+<!-- Add Drawing Feature -->
+==========================*/
+
 const selectDrawType = document.getElementById('draw-type');
 let draw = createDraw(source, selectDrawType);
 
@@ -186,27 +160,26 @@ selectDrawType.onchange = () => {
 addDrawInteraction(draw, map, selectDrawType.value);
 
 map.addControl(selectYourDrawType);
-/*
- =====================
- Snap Interaction
- =====================
- */
+
+/*=======================
+<!-- Snap Interaction -->
+=======================*/
 const snap = new Snap({
   source: vector.getSource(),
 });
 map.addInteraction(snap);
 
-/*
-=========================
-Drag Rotate Interaction
-=========================
-*/
+/*==============================
+<!-- Drag Rotate Interaction -->
+==============================*/
 const dragRotateInteraction = new DragRotate({
   condition: altKeyOnly,
 });
 map.addInteraction(dragRotateInteraction);
 
-// Handle zoom in
+/*=====================
+<!-- Handle Zoom In -->
+=====================*/
 const zoomInElement = document.getElementById('zoomInBtn');
 zoomInElement.addEventListener('click', () => {
   map.getView().animate({
@@ -215,7 +188,9 @@ zoomInElement.addEventListener('click', () => {
   });
 });
 
-// Handle zoom out
+/*======================
+<!-- Handle zoom out -->
+======================*/
 const zoomOutElement = document.getElementById('zoomOutBtn');
 zoomOutElement.addEventListener('click', () => {
   map.getView().animate({
@@ -224,7 +199,9 @@ zoomOutElement.addEventListener('click', () => {
   });
 });
 
-// W3 Fullscreen API with cross-browser availability
+/*========================================================
+<!-- W3 Fullscreen API with cross-browser availability -->
+========================================================*/
 const fullScreenElement = document.getElementById('fullScreenBtn');
 fullScreenElement.addEventListener('click', () => {
   var mapElement = document.getElementById('js-map');
@@ -239,6 +216,9 @@ fullScreenElement.addEventListener('click', () => {
   }
 });
 
+/*=============================================================
+<!-- Clear user drawn vectors from map & reload map element -->
+=============================================================*/
 const clearElement = document.getElementById('clearBtn');
 clearElement.addEventListener('click', () => {
   map.removeLayer(vector);

@@ -1,5 +1,6 @@
 import { GeoJSON } from 'ol/format';
 
+// TODO Shapefile download implementation
 // export const downloadSHP = (source, downloadElementId) => {
 //   const format = new GeoJSON({ featureProjection: 'EPSG: 3857' });
 //   const download = document.getElementById(`${downloadElementId}`);

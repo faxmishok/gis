@@ -2,10 +2,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
-
 const connectPG = require('./src/connect');
 const fetchDataToServe = require('./src/fetch');
-const asyncHandler = require('./src/async');
 
 // Set env variables
 require('dotenv').config();

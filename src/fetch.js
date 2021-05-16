@@ -35,7 +35,7 @@ const fetchDataToServe = (app, client) => {
             );
           });
       } // query end
-      await res.status(200).send(featureCollection);
+      await res.status(200).json({ arrayOfTableNames, featureCollection });
     })
   );
 };
