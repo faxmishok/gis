@@ -20,6 +20,7 @@ import { createDraw, addDrawInteraction } from './mapModules/draw';
 import { downloadGEO } from './mapModules/export';
 import { altKeyOnly } from 'ol/events/condition';
 import { GeoJSON } from 'ol/format';
+import fetchAllData from './mapModules/request';
 
 /*
 ===================================
@@ -132,6 +133,33 @@ Download as GeoJSON
 =====================
 */
 downloadGEO(source, 'download-geo');
+
+const loadedVectorsElement = document.getElementById('loaded-vectors');
+
+fetchAllData().then((response) => {
+  for (const responseItem of response) {
+    var nwLayer = new VectorLayer({
+      title: 'My Title',
+      source: new VectorSource({
+        features: new GeoJSON().readFeatures(responseItem),
+      }),
+      style: new Style({
+        fill: new Fill({
+          color: 'green',
+        }),
+        stroke: new Stroke({
+          color: '#fff',
+          width: 3,
+        }),
+        image: new Circle({
+          radius: 7,
+          fill: new Fill({ color: 'green' }),
+        }),
+      }),
+    });
+    map.addLayer(nwLayer);
+  }
+});
 
 /*
 ======================
