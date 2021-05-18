@@ -54,7 +54,7 @@
         <h2>Base Layers</h2>
 
         <div>
-          <div id="select-map" class="selectdiv">
+          <div id="layer-div" class="selectdiv">
             <select id="layer-select">
               <option value="OSMStandard" selected>OSM Standard</option>
               <option value="OSMHumanitarian">OSM Humanitarian</option>
@@ -64,10 +64,16 @@
         </div><br /><br /><br />
 
 
+        <h2>Map Projection</h2>
+        <div id="proj-div" class="selectdiv">
+          <select id="proj-select">
+            <option value="EPSG:3857" selected>Web Mercator</option>
+            <option value="EPSG:32639">UTM-39 (AZ)</option>
+            <option value="EPSG:4326">Geodetic View</option>
+          </select>
+        </div><br /><br /><br />
+
         <h2>Tools</h2>
-
-
-
 
         <h3>Loaded Vectors</h3>
 

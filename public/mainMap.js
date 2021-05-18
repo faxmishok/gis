@@ -15,11 +15,16 @@ import {
 } from 'ol/control';
 import makeLayers from './mapModules/layers';
 import { getColor } from './mapModules/colors';
-import { selectYourMap, selectYourDrawType } from './mapModules/controls';
+import {
+  selectYourMap,
+  selectYourDrawType,
+  selectYourProjection,
+} from './mapModules/controls';
 import { createDraw, addDrawInteraction } from './mapModules/draw';
 import { downloadGEO } from './mapModules/export';
 import { altKeyOnly } from 'ol/events/condition';
 import { loadPGVectors } from './mapModules/load';
+import { getView } from './mapModules/projection';
 
 /*=========================================
 <!-- OVERRIDING AND ADDING MAP CONTROLS -->
@@ -58,6 +63,8 @@ const layers = makeLayers(baseLayerNames);
 /*===============
 <!-- MAIN MAP -->
 ===============*/
+var [lon, lat] = [5293437.691331564, 4928767.585347839];
+
 const map = new Map({
   target: 'js-map',
   layers,
@@ -107,17 +114,17 @@ map.addLayer(vector);
 =====================================*/
 map.addControl(selectYourMap);
 
-const select = document.getElementById('layer-select');
-const onChange = () => {
-  const scheme = select.value;
+const selectMap = document.getElementById('layer-select');
+const onMapChange = () => {
+  const scheme = selectMap.value;
   for (let i = 0; i < layers.length; ++i) {
     layers[i].setVisible(baseLayerNames[i].scheme === scheme);
   }
 };
 
-select.addEventListener('change', onChange);
+selectMap.addEventListener('change', onMapChange);
 
-onChange();
+onMapChange();
 
 /*==========================
 <!-- Download as GeoJSON -->
@@ -127,7 +134,6 @@ downloadGEO(source, 'download-geo');
 /*==============================================
 <!-- Load and Visualize Postgres Data on Map -->
 ==============================================*/
-
 const PGLayers = loadPGVectors(map, 'loaded-vectors');
 const onCheck = () => {
   for (let i = 0; i < PGLayers.length; i++) {
@@ -135,7 +141,26 @@ const onCheck = () => {
     PGLayers[i].setVisible(labelElement.checked);
   }
 };
-document.getElementById('loaded-vectors').addEventListener('change', onCheck);
+
+const check = document.getElementById('loaded-vectors');
+check.addEventListener('change', onCheck);
+
+/*============================
+<!-- Change Map Projection -->
+============================*/
+
+map.addControl(selectYourProjection);
+
+const selectProjection = document.getElementById('proj-select');
+
+const onProjChange = () => {
+  const currentProjection = getView(selectProjection.value);
+  map.setView(currentProjection);
+};
+
+selectProjection.addEventListener('change', onProjChange);
+
+onProjChange();
 
 /*=========================
 <!-- Modify Map Vectors -->
