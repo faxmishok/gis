@@ -2,7 +2,7 @@ import { Control } from 'ol/control';
 
 export const selectYourMap = new Control({
   element: document.getElementById('layer-select'),
-  target: document.getElementById('select-map'),
+  target: document.getElementById('layer-div'),
 });
 
 export const selectYourDrawType = new Control({
@@ -10,9 +10,7 @@ export const selectYourDrawType = new Control({
   target: document.getElementById('draw-geometry'),
 });
 
-export const addNewControl = (elementID, targetID) => {
-  return new Control({
-    element: document.getElementById(elementID),
-    target: document.getElementById(targetID),
-  });
-};
+export const selectYourProjection = new Control({
+  element: document.getElementById('proj-select'),
+  target: document.getElementById('proj-div'),
+});

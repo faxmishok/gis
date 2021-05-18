@@ -3,6 +3,7 @@ import { Vector as VectorSource } from 'ol/source';
 import { Style, Fill, Stroke, Circle } from 'ol/style';
 import { GeoJSON } from 'ol/format';
 import fetchAllData from './request';
+import { getColor } from './colors';
 
 export const loadPGVectors = (map, elementId) => {
   const divVectorElement = document.getElementById(`${elementId}`);
@@ -25,19 +26,23 @@ export const loadPGVectors = (map, elementId) => {
         source: new VectorSource({
           features: new GeoJSON().readFeatures(responseItem),
         }),
-        style: new Style({
-          fill: new Fill({
-            color: '#906ccf',
-          }),
-          stroke: new Stroke({
-            color: '#906ccf',
-            width: 3,
-          }),
-          image: new Circle({
-            radius: 7,
-            fill: new Fill({ color: '#906ccf' }),
-          }),
-        }),
+        style: (feature) => {
+          return new Style({
+            fill: new Fill({
+              color: getColor(feature),
+            }),
+            stroke: new Stroke({
+              color: '#333',
+              width: 3,
+            }),
+            image: new Circle({
+              radius: 7,
+              fill: new Fill({
+                color: getColor(feature),
+              }),
+            }),
+          });
+        },
       });
       map.addLayer(newLayer);
       newLayer.setVisible(false);
