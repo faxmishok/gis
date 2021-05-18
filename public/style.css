@@ -35,6 +35,10 @@ body {
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 .map {
   width: 80vw;
   height: 100vh;

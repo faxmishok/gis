@@ -240,5 +240,5 @@ fullScreenElement.addEventListener('click', () => {
 const clearElement = document.getElementById('clearBtn');
 clearElement.addEventListener('click', () => {
   map.removeLayer(vector);
-  location.reload();
+  document.getElementById('download-geo').removeAttribute('href');
 });
