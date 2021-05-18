@@ -1,6 +1,6 @@
 import proj4 from 'proj4';
 import { View } from 'ol';
-import { toLonLat, fromLonLat } from 'ol/proj';
+import { fromLonLat } from 'ol/proj';
 import { register } from 'ol/proj/proj4';
 
 export const getView = (projection) => {
@@ -8,11 +8,11 @@ export const getView = (projection) => {
   proj4.defs('EPSG:32639', '+proj=utm +zone=39 +datum=WGS84 +units=m +no_defs');
   register(proj4);
 
-  const webMercatorCoordinates = [5293437.691331564, 4928767.585347839];
+  // Centered longitude & latitude for Azerbaijan
   const lonLatCoords = [47.55175983657498, 40.430962138673834];
 
   const webMercatorView = new View({
-    center: webMercatorCoordinates,
+    center: fromLonLat(lonLatCoords, 'EPSG:3857'),
     projection: 'EPSG:3857',
     zoom: 8,
   });

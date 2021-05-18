@@ -1,9 +1,9 @@
 import 'ol/ol.css';
 import { Map, View } from 'ol';
-import { Tile, Vector as VectorLayer, Group } from 'ol/layer';
+import { Tile, Vector as VectorLayer } from 'ol/layer';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Style, Fill, Stroke, Circle } from 'ol/style';
-import { DragRotate, Modify, Draw, Snap } from 'ol/interaction';
+import { DragRotate, Modify, Snap } from 'ol/interaction';
 import {
   FullScreen,
   MousePosition,
@@ -30,7 +30,6 @@ import { getView } from './mapModules/projection';
 <!-- OVERRIDING AND ADDING MAP CONTROLS -->
 =========================================*/
 const fullScreenControl = new FullScreen();
-const mousePositionControl = new MousePosition();
 const overViewMapControl = new OverviewMap({
   collapsed: true,
   layers: [
@@ -39,7 +38,6 @@ const overViewMapControl = new OverviewMap({
     }),
   ],
 });
-const scaleLineControl = new ScaleLine();
 const zoomSliderControl = new ZoomSlider();
 const zoomToExtentControl = new ZoomToExtent();
 
@@ -75,9 +73,7 @@ const map = new Map({
   keyboardEventTarget: document,
   controls: defaultControls().extend([
     fullScreenControl,
-    // mousePositionControl,
     overViewMapControl,
-    // scaleLineControl,
     zoomSliderControl,
     zoomToExtentControl,
   ]),
@@ -148,7 +144,6 @@ check.addEventListener('change', onCheck);
 /*============================
 <!-- Change Map Projection -->
 ============================*/
-
 map.addControl(selectYourProjection);
 
 const selectProjection = document.getElementById('proj-select');
@@ -165,14 +160,12 @@ onProjChange();
 /*=========================
 <!-- Modify Map Vectors -->
 =========================*/
-
 const modify = new Modify({ source });
 map.addInteraction(modify);
 
 /*==========================
 <!-- Add Drawing Feature -->
 ==========================*/
-
 const selectDrawType = document.getElementById('draw-type');
 let draw = createDraw(source, selectDrawType);
 
