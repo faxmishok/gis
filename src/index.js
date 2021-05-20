@@ -25,6 +25,7 @@ import { downloadGEO } from './mapModules/export';
 import { altKeyOnly } from 'ol/events/condition';
 import { loadPGVectors } from './mapModules/load';
 import { getView } from './mapModules/projection';
+import './style.css';
 
 /*=========================================
 <!-- OVERRIDING AND ADDING MAP CONTROLS -->
