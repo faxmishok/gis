@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Basic settings -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" /> -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- OpenGraph Implementation and meta properties -->
+  <meta property=og:title content="GIS Web Application">
+  <meta name=image property=og:image content=https://res.cloudinary.com/faxmishok/image/upload/v1618781547/og-gis.png>
+  <meta property=og:description
+    content="GIS mapping application developed with OpenLayers 6, Vanilla JavaScript and PostGIS">
+  <meta property=og:url content=https://fahminguliyev.live/gis>
+  <meta name=twitter:card content=summary_large_image>
+  <meta property=twitter:domain content=fahminguliyev.live/gis>
+  <meta property=twitter:url content=https://fahminguliyev.live/gis>
+  <meta name=twitter:title content="GIS Web Application">
+  <meta name=twitter:description
+    content="GIS mapping application developed with OpenLayers 6, Vanilla JavaScript and PostGIS">
+  <meta name=twitter:image content=https://res.cloudinary.com/faxmishok/image/upload/v1618781547/og-gis.png>
+
+  <!-- Metadata -->
+  <meta name=author content="Fahmin Guliyev">
+  <meta name=keywords
+    content="gis, postgresql, postgis, openlayers, javascript, html, css, web, opensource, github-pages">
+  <meta name=description content="GIS mapping application developed with OpenLayers 6, Vanilla JavaScript and PostGIS">
+
+  <title>GIS Web Application</title>
+
+  <!-- External Script Sources -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+  <!-- External CSS / FontAwesome / Bootstrap -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+  <!-- My Style -->
+  <link rel="stylesheet" href="./style.css" />
+
+</head>
+
+<body>
+
+  <div class="grid-container">
+    <div class="grid-1">
+      <div class="sidebar">
+        <h2>Base Layers</h2>
+
+        <div>
+          <div id="layer-div" class="selectdiv">
+            <select id="layer-select">
+              <option value="OSMStandard" selected>OSM Standard</option>
+              <option value="OSMHumanitarian">OSM Humanitarian</option>
+              <option value="StamenTerrain">Stamen Terrain</option>
+            </select>
+          </div>
+        </div><br /><br /><br />
+
+
+        <h2>Map Projection</h2>
+        <div id="proj-div" class="selectdiv">
+          <select id="proj-select">
+            <option value="EPSG:3857" selected>Web Mercator</option>
+            <option value="EPSG:32639">UTM-39 (AZ)</option>
+            <option value="EPSG:4326">Geodetic View</option>
+          </select>
+        </div><br /><br /><br />
+
+        <h2>Tools</h2>
+
+        <h3>Loaded Vectors</h3>
+
+        <div id="loaded-vectors">
+
+        </div>
+
+
+        <h3>Map Controls</h3>
+
+        <button id="zoomInBtn" title="Zoom in">
+          <img src="./assets/zoom-in.svg" alt="zoom-in" class="svg" />
+        </button>
+
+        <button id="zoomOutBtn" title="Zoom out">
+          <img src="./assets/zoom-out.svg" alt="zoom-out" class="svg" />
+        </button>
+
+        <button id="fullScreenBtn" title="Full screen">
+          <img src="./assets/full-screen.svg" alt="full-screen" class="svg" />
+        </button>
+
+        <button id="clearBtn" title="Clear drawing">
+          <img src="./assets/trash.svg" alt="clear-drawing" class="svg" />
+        </button>
+
+        <h3>Draw & Modify</h3>
+
+        <div id="draw-geometry" class="selectdiv">
+          <select id="draw-type">
+            <option value="None" selected>None</option>
+            <option value="Circle">Circle</option>
+            <option value="LineString">LineString</option>
+            <option value="Polygon">Polygon</option>
+            <option value="FreeLine">Freehand</option>
+            <option value="FreePoly">Freehand Polygon</option>
+          </select>
+        </div><br /><br />
+
+
+        <h3>Export Vector As..</h3>
+        <div class="download">
+          <a id="download-geo" class="btn btn-outline-dark" download="features.json">
+            GeoJSON
+            <i id="download-icon" class="fas fa-download"></i>
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="grid-2">
+      <div id="js-map" class="map"></div>
+    </div>
+  </div>
+
+  <!-- <script src="./index.js"></script> -->
+
+</body>
+
+</html>
